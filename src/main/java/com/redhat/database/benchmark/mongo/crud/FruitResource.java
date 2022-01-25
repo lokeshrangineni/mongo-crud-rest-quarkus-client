@@ -16,7 +16,6 @@ public class FruitResource {
 
     @POST
     public void add(Fruit fruit) {
-        fruit.setUuid(UUID.randomUUID().toString());
-        fruitService.add(fruit);
+
     }
 }
