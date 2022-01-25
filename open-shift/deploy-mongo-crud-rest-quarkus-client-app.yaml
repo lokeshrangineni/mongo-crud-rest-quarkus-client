@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-crud-rest-quarkus-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-crud-rest-quarkus-client
+  template:
+    metadata:
+      labels:
+        app: mongo-crud-rest-quarkus-client
+    spec:
+      imagePullSecrets:
+        - name: private-reg-cred
+      containers:
+        - name: mongo-crud-container
+          image: quay.io/lrangine/mongo-crud-rest-quarkus-client:1.0.0-SNAPSHOT
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: "2"
+              memory: 2000Mi
+            requests:
+              cpu: "1.8"
+              memory: 1800Mi
+          env:
+            - name: MIN_POOL
+              value: "10"
+            - name: MAX_POOL
+              value: "10"
+            - name: WORKER_POOL_SIZE
+              value: "10"
+            - name: quarkus.mongodb.connection-string
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-crud-rest-quarkus-client-secret
+                  key: connectionString.standard
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-crud-rest-quarkus-client-service
+spec:
+  selector:
+    app: mongo-crud-rest-quarkus-client
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
