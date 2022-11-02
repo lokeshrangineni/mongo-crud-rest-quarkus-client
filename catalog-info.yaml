@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: mongo-crud-rest-quarkus-client
+  annotations:
+    github.com/project-slug: lokeshrangineni/mongo-crud-rest-quarkus-client
+spec:
+  type: other
+  lifecycle: unknown
+  owner: guests
